@@ -45,6 +45,9 @@ bind=ALT,i,hych:minimize
 bind=ALT_SHIFT,i,hych:restore_minimize
 
 ```
+- when the window is not active, clicking the waybar icon button will activate the window 
+- when the window is active, clicking the icon button will minimize the window
+- when the window has been minimized, clicking the icon button will restore the window
 
 # waybar config demo
 <details>
