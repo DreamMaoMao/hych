@@ -1,0 +1,12 @@
+[hych]
+description = "Window minimization plugin for hyprland"
+version = "0.1"
+author = "DreamMaoMao"
+
+[hych.build]
+output = "build/libhych.so"
+steps = [
+  "rm -rf build",
+  "cmake -DCMAKE_BUILD_TYPE=Debug -B build",
+  "cmake --build build"
+]
