@@ -82,8 +82,16 @@ void hkCWindow_moveToWorkspace(void* thisptr,int workspaceID) {
       pNode->isMinimized = false;
       wlr_foreign_toplevel_handle_v1_set_minimized(pWindow->m_phForeignToplevel, false);  
     }
+
   }
+  
   (*(origCWindow_moveToWorkspace)g_pCWindow_moveToWorkspaceHook->m_pOriginal)(thisptr, workspaceID);
+
+   if (!g_pCompositor->isWorkspaceSpecial(workspaceID) && !pNode->isMinimized) {
+      pNode->hibk_workspaceID = workspaceID;
+      pNode->hibk_workspaceName = g_pCompositor->getWorkspaceByID(workspaceID)->m_szName;
+   }
+
 }
 
 void hkEvents_listener_requestMinimize(void* thisptr,void* owner, void* data) {
