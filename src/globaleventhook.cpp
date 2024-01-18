@@ -52,15 +52,17 @@ void hkIHyprLayout_requestFocusForWindow(void* thisptr,CWindow* pWindow) {
 }
 
 void hkCWindow_moveToWorkspace(void* thisptr,int workspaceID) {
+  auto pWindow = g_pCompositor->m_pLastWindow;
+  auto pNode = g_Hide->getNodeFromWindow(pWindow);
+
+  if (!pNode) {
+    (*(origCWindow_moveToWorkspace)g_pCWindow_moveToWorkspaceHook->m_pOriginal)(thisptr, workspaceID);
+    return;
+  }
+
   if (g_pCompositor->isWorkspaceSpecial(workspaceID)) {
-      auto pWindow = g_pCompositor->m_pLastWindow;
-      auto pNode = g_Hide->getNodeFromWindow(pWindow);
-
-      if(pNode) {
-        pNode->isMinimized = true;
-        wlr_foreign_toplevel_handle_v1_set_minimized(pWindow->m_phForeignToplevel, true);
-      } 
-
+    pNode->isMinimized = true;
+    wlr_foreign_toplevel_handle_v1_set_minimized(pWindow->m_phForeignToplevel, true);
   } else {
     static auto* const PFOLLOWMOUSE = &g_pConfigManager->getConfigValuePtr("input:follow_mouse")->intValue;
     std::string workspaceName = "";
@@ -77,13 +79,8 @@ void hkCWindow_moveToWorkspace(void* thisptr,int workspaceID) {
         }
     }
     if (requestedWorkspaceIsAlreadyOpen && specialOpenOnMonitor == workspaceID) {
-      auto pWindow = g_pCompositor->m_pLastWindow;
-      auto pNode = g_Hide->getNodeFromWindow(pWindow);
-
-      if(pNode) {
-        pNode->isMinimized = false;
-        wlr_foreign_toplevel_handle_v1_set_minimized(pWindow->m_phForeignToplevel, false);  
-      } 
+      pNode->isMinimized = false;
+      wlr_foreign_toplevel_handle_v1_set_minimized(pWindow->m_phForeignToplevel, false);  
     }
   }
   (*(origCWindow_moveToWorkspace)g_pCWindow_moveToWorkspaceHook->m_pOriginal)(thisptr, workspaceID);

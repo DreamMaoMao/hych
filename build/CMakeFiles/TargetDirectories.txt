@@ -1,7 +1,0 @@
-/home/wrq/deskenv/master/hych/build/CMakeFiles/hych.dir
-/home/wrq/deskenv/master/hych/build/CMakeFiles/edit_cache.dir
-/home/wrq/deskenv/master/hych/build/CMakeFiles/rebuild_cache.dir
-/home/wrq/deskenv/master/hych/build/CMakeFiles/list_install_components.dir
-/home/wrq/deskenv/master/hych/build/CMakeFiles/install.dir
-/home/wrq/deskenv/master/hych/build/CMakeFiles/install/local.dir
-/home/wrq/deskenv/master/hych/build/CMakeFiles/install/strip.dir
