@@ -1,5 +1,8 @@
 # hych
-Window minimization plugin for hyprland
+Window minimization plugin for hyprland.
+
+https://github.com/DreamMaoMao/hych/assets/30348075/9d114048-a260-4447-bbe3-2162e8c86ac9
+
 
 
 ### what can it do:
@@ -9,7 +12,12 @@ Window minimization plugin for hyprland
 
 - Support shortcut keys to minimize Windows and restore Windows
 
+- Support for minimize buttons in app
 
+This plugin uses the special workspace built into hyprland to hide windows, aiming to enhance the functionality of the special workspace, so it can also be compatible with the previous special workspace operations.
+
+For example, you can restore the windows that you put into the special workspace by the old way by clicking the waybar icon or using the shortcut keys of this plugin to the normal workspace.
+  
 ### Manual Installation
 
 ##### something need to notice
