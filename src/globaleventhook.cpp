@@ -35,6 +35,19 @@ void closeWindowHook(void* self, SCallbackInfo &info, std::any data) {
   
 }
 
+
+void workspaceHook(void* self, SCallbackInfo &info, std::any data) {
+  auto* const pWorkspace = std::any_cast<CWorkspace*>(data);
+    
+  auto pNode = g_Hide->getNodeFromWindow(g_pCompositor->m_pLastWindow);
+
+  if (pNode && !g_pCompositor->isWorkspaceSpecial(pWorkspace->m_iID)) {
+     pNode->hibk_workspaceID = pWorkspace->m_iID;
+     pNode->hibk_workspaceName =pWorkspace->m_szName;
+  }
+}
+
+
 void hkIHyprLayout_requestFocusForWindow(void* thisptr,CWindow* pWindow) {
 
   auto pNode = g_Hide->getNodeFromWindow(pWindow);
@@ -82,15 +95,9 @@ void hkCWindow_moveToWorkspace(void* thisptr,int workspaceID) {
       pNode->isMinimized = false;
       wlr_foreign_toplevel_handle_v1_set_minimized(pWindow->m_phForeignToplevel, false);  
     }
-
   }
   
   (*(origCWindow_moveToWorkspace)g_pCWindow_moveToWorkspaceHook->m_pOriginal)(thisptr, workspaceID);
-
-   if (!g_pCompositor->isWorkspaceSpecial(workspaceID) && !pNode->isMinimized) {
-      pNode->hibk_workspaceID = workspaceID;
-      pNode->hibk_workspaceName = g_pCompositor->getWorkspaceByID(workspaceID)->m_szName;
-   }
 
 }
 
@@ -107,6 +114,7 @@ void registerGlobalEventHook() {
 
   HyprlandAPI::registerCallbackDynamic(PHANDLE, "openWindow", [&](void* self, SCallbackInfo& info, std::any data) { openWindowHook(self, info, data); });
   HyprlandAPI::registerCallbackDynamic(PHANDLE, "closeWindow", [&](void* self, SCallbackInfo& info, std::any data) { closeWindowHook(self, info, data); });
+  HyprlandAPI::registerCallbackDynamic(PHANDLE, "workspace", [&](void* self, SCallbackInfo& info, std::any data) { workspaceHook(self, info, data); });
 
   g_pIHyprLayout_requestFocusForWindowHook = HyprlandAPI::createFunctionHook(PHANDLE, (void*)&IHyprLayout::requestFocusForWindow, (void*)&hkIHyprLayout_requestFocusForWindow);
   g_pIHyprLayout_requestFocusForWindowHook->hook();
