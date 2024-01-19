@@ -11,16 +11,31 @@ SHideNodeData *Hide::getNodeFromWindow(CWindow *pWindow)
     return nullptr;
 }
 
+void refocusToSourceWorkspaceAfterMove(int workspaceID) {
+    if (g_pCompositor->m_pLastWindow->m_iWorkspaceID == workspaceID)
+        return;
+    
+    for (auto &w : g_pCompositor->m_vWindows) {
+        CWindow *pWindow = w.get();
+        if (pWindow->m_iWorkspaceID == workspaceID) {
+            g_pCompositor->focusWindow(pWindow);
+            return;
+        }
+    }
+    g_pCompositor->focusWindow(nullptr);
+}
+
 void Hide::hideWindowToSpecial(CWindow *pWindow) {
 
     auto pNode = getNodeFromWindow(pWindow);
-    
+    int workspaceID = pWindow->m_iWorkspaceID;
     if(!pNode) 
         return;
 
     pNode->isMinimized = true;
 
     g_pKeybindManager->moveActiveToWorkspaceSilent("special");
+    refocusToSourceWorkspaceAfterMove(workspaceID);
     wlr_foreign_toplevel_handle_v1_set_activated(pWindow->m_phForeignToplevel, false);
     // wlr_foreign_toplevel_handle_v1_set_minimized(pWindow->m_phForeignToplevel, true);
 }
