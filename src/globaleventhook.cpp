@@ -6,27 +6,6 @@ typedef void (*origIHyprLayout_requestFocusForWindow)(void* , CWindow* pWindow);
 typedef void (*origCWindow_moveToWorkspace)(void*,int workspaceID);
 
 
-bool isInSpecialWorkspace() {
-    static auto* const PFOLLOWMOUSE = &g_pConfigManager->getConfigValuePtr("input:follow_mouse")->intValue;
-    std::string workspaceName = "";
-    int workspaceID   = getWorkspaceIDFromString("special:",workspaceName);
-    bool requestedWorkspaceIsAlreadyOpen = false;
-    const auto PMONITOR = *PFOLLOWMOUSE == 1 ? g_pCompositor->getMonitorFromCursor() : g_pCompositor->m_pLastMonitor;
-    int specialOpenOnMonitor = PMONITOR->specialWorkspaceID;
-
-
-    for (auto& m : g_pCompositor->m_vMonitors) {
-        if (m->specialWorkspaceID == workspaceID) {
-            requestedWorkspaceIsAlreadyOpen = true;
-            break;
-        }
-    }
-    if (requestedWorkspaceIsAlreadyOpen && specialOpenOnMonitor == workspaceID) {
-      return true;
-    }
-  return false;
-}
-
 void openWindowHook(void* self, SCallbackInfo &info, std::any data) {
     auto* const pWindow = std::any_cast<CWindow*>(data);
     
@@ -38,7 +17,7 @@ void openWindowHook(void* self, SCallbackInfo &info, std::any data) {
 
     pNode->pWindow = pWindow;
 
-    if(!isInSpecialWorkspace()) { // TODO:always false,because this handler can't receive event from special workspace
+    if(!g_Hide->isInSpecialWorkspace()) { // TODO:always false,because this handler can't receive event from special workspace
       pNode->hibk_workspaceID = pWindow->m_iWorkspaceID;
       pNode->hibk_workspaceName = pWindowOriWorkspace->m_szName;
       pNode->isMinimized = false;
@@ -102,7 +81,7 @@ void hkCWindow_moveToWorkspace(void* thisptr,int workspaceID) {
   if (pNode && g_pCompositor->isWorkspaceSpecial(workspaceID)) {
     pNode->isMinimized = true;
     wlr_foreign_toplevel_handle_v1_set_minimized(pWindow->m_phForeignToplevel, true);
-  } else if(pNode && isInSpecialWorkspace()) {
+  } else if(pNode && g_Hide->isInSpecialWorkspace()) {
       pNode->isMinimized = false;
       wlr_foreign_toplevel_handle_v1_set_minimized(pWindow->m_phForeignToplevel, false);  
   }

@@ -11,6 +11,27 @@ SHideNodeData *Hide::getNodeFromWindow(CWindow *pWindow)
     return nullptr;
 }
 
+bool Hide::isInSpecialWorkspace() {
+    static auto* const PFOLLOWMOUSE = &g_pConfigManager->getConfigValuePtr("input:follow_mouse")->intValue;
+    std::string workspaceName = "";
+    int workspaceID   = getWorkspaceIDFromString("special:",workspaceName);
+    bool requestedWorkspaceIsAlreadyOpen = false;
+    const auto PMONITOR = *PFOLLOWMOUSE == 1 ? g_pCompositor->getMonitorFromCursor() : g_pCompositor->m_pLastMonitor;
+    int specialOpenOnMonitor = PMONITOR->specialWorkspaceID;
+
+
+    for (auto& m : g_pCompositor->m_vMonitors) {
+        if (m->specialWorkspaceID == workspaceID) {
+            requestedWorkspaceIsAlreadyOpen = true;
+            break;
+        }
+    }
+    if (requestedWorkspaceIsAlreadyOpen && specialOpenOnMonitor == workspaceID) {
+      return true;
+    }
+  return false;
+}
+
 void Hide::refocusToSourceWorkspaceAfterMove(int workspaceID) {
     if (g_pCompositor->m_pLastWindow->m_iWorkspaceID == workspaceID)
         return;

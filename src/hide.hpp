@@ -23,6 +23,7 @@ public:
   void restoreWindowFromSpecial(CWindow *pWindow);
   void refocusToSourceWorkspaceAfterMove(int workspaceID);
   void moveWindowToSpecialWorlspace(CWindow *pWindow);
+  bool isInSpecialWorkspace();
   std::list<SHideNodeData> m_lHideNodesData; 
 
 };
