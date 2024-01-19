@@ -51,7 +51,7 @@ void workspaceHook(void* self, SCallbackInfo &info, std::any data) {
     
   auto pNode = g_Hide->getNodeFromWindow(g_pCompositor->m_pLastWindow);
 
-  if (pNode && !g_pCompositor->isWorkspaceSpecial(pWorkspace->m_iID)) {
+  if (pNode && !pNode->isMinimized && !g_pCompositor->isWorkspaceSpecial(pWorkspace->m_iID)) {
      pNode->hibk_workspaceID = pWorkspace->m_iID;
      pNode->hibk_workspaceName =pWorkspace->m_szName;
   }
