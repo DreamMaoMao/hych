@@ -17,7 +17,7 @@ APICALL EXPORT PLUGIN_DESCRIPTION_INFO PLUGIN_INIT(HANDLE handle)
 	registerGlobalEventHook();
 	registerDispatchers();
 	
-	return {"hych", "hyprland grocery Store", "DreamMaoMao", "0.1"};
+	return {"hych", "Window minimization plugin", "DreamMaoMao", "0.1"};
 }
 
 APICALL EXPORT void PLUGIN_EXIT() {}
