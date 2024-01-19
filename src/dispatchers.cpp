@@ -10,6 +10,7 @@ void minimize_window(std::string arg)
 	auto pNode = g_Hide->getNodeFromWindow(pWindow);
   	if(pNode && !pNode->isMinimized) {
   	  g_Hide->hideWindowToSpecial(pWindow);
+	  hych_log(LOG,"shortcut key toggle minimize window:{}",pWindow);
   	}
 }
 
@@ -21,6 +22,7 @@ void restore_minimize_window(std::string arg)
 		const auto pMonitor = *PFOLLOWMOUSE == 1 ? g_pCompositor->getMonitorFromCursor() : g_pCompositor->m_pLastMonitor;
 		g_Hide->restoreWindowFromSpecial(g_pCompositor->m_pLastWindow);
 		pMonitor->setSpecialWorkspace(nullptr);
+		hych_log(LOG,"special workspace view,shortcut key toggle restore window:{}",g_pCompositor->m_pLastWindow);
 		return;
 	}
 
@@ -30,6 +32,7 @@ void restore_minimize_window(std::string arg)
             continue;
         }
 		g_Hide->restoreWindowFromSpecial(nd.pWindow);
+		hych_log(LOG,"normal workspace view,shortcut key toggle restore window:{}",nd.pWindow);
         break;
 	}	
 }

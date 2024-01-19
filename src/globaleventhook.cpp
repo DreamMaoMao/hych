@@ -29,7 +29,7 @@ void openWindowHook(void* self, SCallbackInfo &info, std::any data) {
     }
 
     
-    hych_log(LOG,"bind a node to window{}",pNode->pWindow);
+    hych_log(LOG,"bind a memory node to window:{}",pNode->pWindow);
   
 }
 
@@ -41,7 +41,8 @@ void closeWindowHook(void* self, SCallbackInfo &info, std::any data) {
     if (!pNode)
         return;
 
-    g_Hide->m_lHideNodesData.remove(*pNode);    
+    g_Hide->m_lHideNodesData.remove(*pNode);
+    hych_log(LOG,"remove a memory node which is bind to window:{}",pNode->pWindow);    
   
 }
 
@@ -54,6 +55,7 @@ void workspaceHook(void* self, SCallbackInfo &info, std::any data) {
   if (pNode && !pNode->isMinimized && !g_pCompositor->isWorkspaceSpecial(pWorkspace->m_iID)) {
      pNode->hibk_workspaceID = pWorkspace->m_iID;
      pNode->hibk_workspaceName =pWorkspace->m_szName;
+     hych_log(LOG,"update workspace memory,workspaceID:{},window:{}",pWorkspace->m_iID,pNode->pWindow);    
   }
 }
 
@@ -63,11 +65,13 @@ void hkIHyprLayout_requestFocusForWindow(void* thisptr,CWindow* pWindow) {
   auto pNode = g_Hide->getNodeFromWindow(pWindow);
   if (pNode && pNode->isMinimized) {
     g_Hide->restoreWindowFromSpecial(pWindow);
+    hych_log(LOG,"click waybar to restore window:{}",pWindow);    
     return;
   }
 
   if(pNode && !pNode->isMinimized && pWindow == g_pCompositor->m_pLastWindow) {
     g_Hide->hideWindowToSpecial(pWindow);
+    hych_log(LOG,"click waybar to minimize window:{}",pWindow);    
     return;
   }
 
@@ -81,9 +85,11 @@ void hkCWindow_moveToWorkspace(void* thisptr,int workspaceID) {
   if (pNode && g_pCompositor->isWorkspaceSpecial(workspaceID)) {
     pNode->isMinimized = true;
     wlr_foreign_toplevel_handle_v1_set_minimized(pWindow->m_phForeignToplevel, true);
+    hych_log(LOG,"window enter special workspace,minimized:{},window:{}",pNode->isMinimized,pWindow); 
   } else if(pNode && g_Hide->isInSpecialWorkspace()) {
       pNode->isMinimized = false;
       wlr_foreign_toplevel_handle_v1_set_minimized(pWindow->m_phForeignToplevel, false);  
+      hych_log(LOG,"window leave special workspace,minimized:{},window:{}",pNode->isMinimized,pWindow); 
   }
   
   (*(origCWindow_moveToWorkspace)g_pCWindow_moveToWorkspaceHook->m_pOriginal)(thisptr, workspaceID);
@@ -95,6 +101,7 @@ void hkEvents_listener_requestMinimize(void* thisptr,void* owner, void* data) {
     auto pNode = g_Hide->getNodeFromWindow(pWindow);
 
     if(pNode && !pNode->isMinimized) {
+      hych_log(LOG,"receive minimize request from client,window:{}",pWindow); 
       g_Hide->hideWindowToSpecial(pWindow);
     }
 }
