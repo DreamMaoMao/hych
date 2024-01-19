@@ -1,7 +1,16 @@
 # hych
 Window minimization plugin for hyprland,Enhancements to special workspaces
+## use mouse
 
 https://github.com/DreamMaoMao/hych/assets/30348075/9d114048-a260-4447-bbe3-2162e8c86ac9
+
+## use keyboard
+
+
+https://github.com/DreamMaoMao/hych/assets/30348075/976d7b79-3d7c-4789-b8af-9d434d66b03b
+
+
+
 
 This plugin is not yet available for V0.34 version of hyprland,This bug is being fixed, refer to issue:[https://github.com/DreamMaoMao/hych/issues/1]
 
