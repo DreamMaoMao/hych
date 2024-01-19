@@ -11,7 +11,7 @@ SHideNodeData *Hide::getNodeFromWindow(CWindow *pWindow)
     return nullptr;
 }
 
-void refocusToSourceWorkspaceAfterMove(int workspaceID) {
+void Hide::refocusToSourceWorkspaceAfterMove(int workspaceID) {
     if (g_pCompositor->m_pLastWindow->m_iWorkspaceID == workspaceID)
         return;
     

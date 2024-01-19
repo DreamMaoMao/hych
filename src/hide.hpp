@@ -21,6 +21,7 @@ public:
   SHideNodeData *getNodeFromWindow(CWindow *pWindow); 
   void hideWindowToSpecial(CWindow *pWindow);
   void restoreWindowFromSpecial(CWindow *pWindow);
+  void refocusToSourceWorkspaceAfterMove(int workspaceID);
   std::list<SHideNodeData> m_lHideNodesData; 
 
 };
