@@ -9,7 +9,7 @@ typedef void (*origCWindow_moveToWorkspace)(void*,int workspaceID);
 void openWindowHook(void* self, SCallbackInfo &info, std::any data) {
     auto* const pWindow = std::any_cast<CWindow*>(data);
     
-    if (pWindow->isHidden() || !pWindow->m_bIsMapped || pWindow->m_bFadingOut || g_pCompositor->isWorkspaceSpecial(pWindow->m_iWorkspaceID) || pWindow->m_bX11DoesntWantBorders)
+    if (pWindow->isHidden() || !pWindow->m_bIsMapped || pWindow->m_bFadingOut || pWindow->m_bX11DoesntWantBorders)
       return;
 
     const auto pNode = &g_Hide->m_lHideNodesData.emplace_back(); // make a new node in list back
@@ -17,7 +17,7 @@ void openWindowHook(void* self, SCallbackInfo &info, std::any data) {
 
     pNode->pWindow = pWindow;
 
-    if(!g_Hide->isInSpecialWorkspace()) { // TODO:always false,because this handler can't receive event from special workspace
+    if(!g_pCompositor->isWorkspaceSpecial(pWindow->m_iWorkspaceID)) { 
       pNode->hibk_workspaceID = pWindow->m_iWorkspaceID;
       pNode->hibk_workspaceName = pWindowOriWorkspace->m_szName;
       pNode->isMinimized = false;
@@ -27,8 +27,8 @@ void openWindowHook(void* self, SCallbackInfo &info, std::any data) {
       pNode->isMinimized = true;
       wlr_foreign_toplevel_handle_v1_set_minimized(pWindow->m_phForeignToplevel, true);
     }
-    
 
+    
     hych_log(LOG,"bind a node to window{}",pNode->pWindow);
   
 }
