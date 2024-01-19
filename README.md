@@ -3,7 +3,7 @@ Window minimization plugin for hyprland.()
 
 https://github.com/DreamMaoMao/hych/assets/30348075/9d114048-a260-4447-bbe3-2162e8c86ac9
 
-This plugin is not yet available for V0.34 version of hyprland, refer to issue:(#1)[https://github.com/DreamMaoMao/hych/issues/1]
+This plugin is not yet available for V0.34 version of hyprland,This bug is being fixed, refer to issue:[https://github.com/DreamMaoMao/hych/issues/1]
 
 ### what can it do:
 - Support minimize window and restore window by clicking the icon on the waybar
