@@ -25,6 +25,32 @@ void Hide::refocusToSourceWorkspaceAfterMove(int workspaceID) {
     g_pCompositor->focusWindow(nullptr);
 }
 
+void Hide::moveWindowToSpecialWorlspace(CWindow *pWindow) {
+    std::string workspaceName = "";
+
+    const int   WORKSPACEID = getWorkspaceIDFromString("special", workspaceName);
+
+    if (WORKSPACEID == INT_MAX) {
+        Debug::log(ERR, "Error in moveActiveToWorkspaceSilent, invalid value");
+        return;
+    }
+
+    if (WORKSPACEID == pWindow->m_iWorkspaceID)
+        return;
+
+    g_pHyprRenderer->damageWindow(pWindow);
+
+    auto       pWorkspace = g_pCompositor->getWorkspaceByID(WORKSPACEID);
+
+    if (pWorkspace) {
+        g_pCompositor->moveWindowToWorkspaceSafe(pWindow, pWorkspace);
+    } else {
+        pWorkspace = g_pCompositor->createNewWorkspace(WORKSPACEID, pWindow->m_iMonitorID, workspaceName);
+        g_pCompositor->moveWindowToWorkspaceSafe(pWindow, pWorkspace);
+    }
+}
+
+
 void Hide::hideWindowToSpecial(CWindow *pWindow) {
 
     auto pNode = getNodeFromWindow(pWindow);
@@ -34,11 +60,11 @@ void Hide::hideWindowToSpecial(CWindow *pWindow) {
 
     pNode->isMinimized = true;
 
-    g_pKeybindManager->moveActiveToWorkspaceSilent("special");
+    moveWindowToSpecialWorlspace(pWindow);
     refocusToSourceWorkspaceAfterMove(workspaceID);
     wlr_foreign_toplevel_handle_v1_set_activated(pWindow->m_phForeignToplevel, false);
-    // wlr_foreign_toplevel_handle_v1_set_minimized(pWindow->m_phForeignToplevel, true);
 }
+
 
 void Hide::restoreWindowFromSpecial(CWindow *pWindow) {
 
@@ -56,7 +82,6 @@ void Hide::restoreWindowFromSpecial(CWindow *pWindow) {
     }
 
     auto pMonitor = g_pCompositor->getMonitorFromID(pWorkspace->m_iMonitorID);
-    // g_pCompositor->m_pLastWindow =  pWindow;
     g_pCompositor->moveWindowToWorkspaceSafe(pWindow, pWorkspace);
     pMonitor->changeWorkspace(pWorkspace);
 

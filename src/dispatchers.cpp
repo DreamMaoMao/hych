@@ -7,9 +7,11 @@
 
 void minimize_window(std::string arg)
 {
-	auto pActiveWindow =  g_pCompositor->m_pLastWindow;
-	if(pActiveWindow)
-		g_Hide->hideWindowToSpecial(pActiveWindow);
+	auto pWindow =  g_pCompositor->m_pLastWindow;
+	auto pNode = g_Hide->getNodeFromWindow(pWindow);
+  	if(pNode && !pNode->isMinimized) {
+  	  g_Hide->hideWindowToSpecial(pWindow);
+  	}
 }
 
 void restore_minimize_window(std::string arg)
