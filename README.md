@@ -12,7 +12,7 @@ https://github.com/DreamMaoMao/hych/assets/30348075/976d7b79-3d7c-4789-b8af-9d43
 
 
 
-This plugin is not yet available for V0.34 version of hyprland,This bug is being fixed, refer to issue:[https://github.com/DreamMaoMao/hych/issues/1]
+This plugin some feature(click waybaricon) is not yet available for V0.34 version of hyprland,This bug is being fixed, refer to issue:[https://github.com/DreamMaoMao/hych/issues/1]
 
 ### what can it do:
 
