@@ -86,7 +86,7 @@ void hkCWindow_moveToWorkspace(void* thisptr,int workspaceID) {
     pNode->isMinimized = true;
     wlr_foreign_toplevel_handle_v1_set_minimized(pWindow->m_phForeignToplevel, true);
     hych_log(LOG,"window enter special workspace,minimized:{},window:{}",pNode->isMinimized,pWindow); 
-  } else if(pNode && g_hych_Hide->isInSpecialWorkspace()) {
+  } else if(pNode && g_pCompositor->m_pLastMonitor->specialWorkspaceID != 0) {
       pNode->isMinimized = false;
       wlr_foreign_toplevel_handle_v1_set_minimized(pWindow->m_phForeignToplevel, false);  
       hych_log(LOG,"window leave special workspace,minimized:{},window:{}",pNode->isMinimized,pWindow); 

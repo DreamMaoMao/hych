@@ -64,7 +64,7 @@ plugin = /usr/lib/libhych.so
 
 bind=ALT,i,hych:minimize # minimize window
 bind=ALT_SHIFT,i,hych:restore_minimize #manual restore window
-bind = ALT, w, hych:toggle_restore_window # restore by alt-tab mode
+bind = ALT, w, hych:toggle_restore_window # enter special or restore windwo(normal mode),enter special or switch focus(alt-tab mode)
 
 plugin {
     hych {

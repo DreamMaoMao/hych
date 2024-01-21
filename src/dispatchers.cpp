@@ -55,7 +55,7 @@ void minimize_window(std::string arg)
 void restore_minimize_window(std::string arg)
 {
 	
-	if(g_hych_Hide->isInSpecialWorkspace()) {
+	if(g_pCompositor->m_pLastMonitor->specialWorkspaceID != 0) {
 		auto pTargetWindow = g_pCompositor->m_pLastWindow;
 		
 		if(!pTargetWindow) {
@@ -89,8 +89,11 @@ void toggle_restore_window(std::string arg)
 {
 	if(g_pCompositor->m_pLastMonitor->specialWorkspaceID == 0) {
 		g_pKeybindManager->toggleSpecialWorkspace("minimized");
-	} else {
+	} else if(g_hych_enable_alt_release_exit && !g_pCompositor->m_pLastMonitor->specialWorkspaceID == 0) {
 		dispatch_circle("");
+	} else {
+		restore_minimize_window("");
+		g_hych_Hide->leaveSpecialWorkspace();
 	}
 }
 
