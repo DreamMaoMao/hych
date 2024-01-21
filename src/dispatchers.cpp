@@ -54,9 +54,15 @@ void minimize_window(std::string arg)
 
 void restore_minimize_window(std::string arg)
 {
-
+	
 	if(g_hych_Hide->isInSpecialWorkspace()) {
-		if(!g_pCompositor->isWorkspaceSpecial(g_pCompositor->m_pLastWindow->m_iWorkspaceID)) {
+		auto pTargetWindow = g_pCompositor->m_pLastWindow;
+		
+		if(!pTargetWindow) {
+			return;
+		}
+
+		if(!g_pCompositor->isWorkspaceSpecial(pTargetWindow->m_iWorkspaceID)) {
 			g_hych_Hide->leaveSpecialWorkspace();
 			hych_log(LOG,"special workspace view,do noting");
 			return;
