@@ -45,9 +45,9 @@ void dispatch_circle(std::string arg)
 void minimize_window(std::string arg)
 {
 	auto pWindow =  g_pCompositor->m_pLastWindow;
-	auto pNode = g_Hide->getNodeFromWindow(pWindow);
+	auto pNode = g_hych_Hide->getNodeFromWindow(pWindow);
   	if(pNode && !pNode->isMinimized) {
-  	  g_Hide->hideWindowToSpecial(pWindow);
+  	  g_hych_Hide->hideWindowToSpecial(pWindow);
 	  hych_log(LOG,"shortcut key toggle minimize window:{}",pWindow);
   	}
 }
@@ -55,24 +55,24 @@ void minimize_window(std::string arg)
 void restore_minimize_window(std::string arg)
 {
 
-	if(g_Hide->isInSpecialWorkspace()) {
+	if(g_hych_Hide->isInSpecialWorkspace()) {
 		if(!g_pCompositor->isWorkspaceSpecial(g_pCompositor->m_pLastWindow->m_iWorkspaceID)) {
-			g_Hide->leaveSpecialWorkspace();
+			g_hych_Hide->leaveSpecialWorkspace();
 			hych_log(LOG,"special workspace view,do noting");
 			return;
 		}
-		g_Hide->restoreWindowFromSpecial(g_pCompositor->m_pLastWindow);
-		g_Hide->leaveSpecialWorkspace();
+		g_hych_Hide->restoreWindowFromSpecial(g_pCompositor->m_pLastWindow);
+		g_hych_Hide->leaveSpecialWorkspace();
 		hych_log(LOG,"special workspace view,shortcut key toggle restore window:{}",g_pCompositor->m_pLastWindow);
 		return;
 	}
 
-    for (auto &nd : g_Hide->m_lHideNodesData)
+    for (auto &nd : g_hych_Hide->m_lHideNodesData)
     {
         if(!nd.isMinimized) {
             continue;
         }
-		g_Hide->restoreWindowFromSpecial(nd.pWindow);
+		g_hych_Hide->restoreWindowFromSpecial(nd.pWindow);
 		hych_log(LOG,"normal workspace view,shortcut key toggle restore window:{}",nd.pWindow);
         break;
 	}	

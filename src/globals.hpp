@@ -15,13 +15,13 @@
 #include "hide.hpp"
 
 inline HANDLE PHANDLE = nullptr;
-inline CFunctionHook *g_pIHyprLayout_requestFocusForWindowHook = nullptr;
-inline CFunctionHook *g_pCWindow_moveToWorkspaceHook = nullptr;
-inline CFunctionHook *g_pEvents_listener_requestMinimizeHook = nullptr;
-inline CFunctionHook* g_pOnKeyboardKeyHook = nullptr;
+inline CFunctionHook *g_hych_pIHyprLayout_requestFocusForWindowHook = nullptr;
+inline CFunctionHook *g_hych_pCWindow_moveToWorkspaceHook = nullptr;
+inline CFunctionHook *g_hych_pEvents_listener_requestMinimizeHook = nullptr;
+inline CFunctionHook* g_hych_pOnKeyboardKeyHook = nullptr;
 
-inline int g_enable_alt_release_exit;
-inline std::string g_alt_replace_key;
+inline int g_hych_enable_alt_release_exit;
+inline std::string g_hych_alt_replace_key;
 
 inline void errorNotif()
 {

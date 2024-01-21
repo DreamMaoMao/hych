@@ -12,7 +12,7 @@ void openWindowHook(void* self, SCallbackInfo &info, std::any data) {
     if (pWindow->isHidden() || !pWindow->m_bIsMapped || pWindow->m_bFadingOut || pWindow->m_bX11DoesntWantBorders)
       return;
 
-    const auto pNode = &g_Hide->m_lHideNodesData.emplace_back(); // make a new node in list back
+    const auto pNode = &g_hych_Hide->m_lHideNodesData.emplace_back(); // make a new node in list back
     const auto pWindowOriWorkspace = g_pCompositor->getWorkspaceByID(pWindow->m_iWorkspaceID);
 
     pNode->pWindow = pWindow;
@@ -36,12 +36,12 @@ void openWindowHook(void* self, SCallbackInfo &info, std::any data) {
 void closeWindowHook(void* self, SCallbackInfo &info, std::any data) {
     auto* const pWindow = std::any_cast<CWindow*>(data);
     
-    auto pNode = g_Hide->getNodeFromWindow(pWindow);
+    auto pNode = g_hych_Hide->getNodeFromWindow(pWindow);
 
     if (!pNode)
         return;
 
-    g_Hide->m_lHideNodesData.remove(*pNode);
+    g_hych_Hide->m_lHideNodesData.remove(*pNode);
     hych_log(LOG,"remove a memory node which is bind to window:{}",pNode->pWindow);    
   
 }
@@ -50,7 +50,7 @@ void closeWindowHook(void* self, SCallbackInfo &info, std::any data) {
 void workspaceHook(void* self, SCallbackInfo &info, std::any data) {
   auto* const pWorkspace = std::any_cast<CWorkspace*>(data);
     
-  auto pNode = g_Hide->getNodeFromWindow(g_pCompositor->m_pLastWindow);
+  auto pNode = g_hych_Hide->getNodeFromWindow(g_pCompositor->m_pLastWindow);
 
   if (pNode && !pNode->isMinimized && !g_pCompositor->isWorkspaceSpecial(pWorkspace->m_iID)) {
      pNode->hibk_workspaceID = pWorkspace->m_iID;
@@ -62,47 +62,47 @@ void workspaceHook(void* self, SCallbackInfo &info, std::any data) {
 
 void hkIHyprLayout_requestFocusForWindow(void* thisptr,CWindow* pWindow) {
 
-  auto pNode = g_Hide->getNodeFromWindow(pWindow);
+  auto pNode = g_hych_Hide->getNodeFromWindow(pWindow);
   if (pNode && pNode->isMinimized) {
-    g_Hide->restoreWindowFromSpecial(pWindow);
+    g_hych_Hide->restoreWindowFromSpecial(pWindow);
     hych_log(LOG,"click waybar to restore window:{}",pWindow);    
     return;
   }
 
   if(pNode && !pNode->isMinimized && pWindow == g_pCompositor->m_pLastWindow) {
-    g_Hide->hideWindowToSpecial(pWindow);
+    g_hych_Hide->hideWindowToSpecial(pWindow);
     hych_log(LOG,"click waybar to minimize window:{}",pWindow);    
     return;
   }
 
-  (*(origIHyprLayout_requestFocusForWindow)g_pIHyprLayout_requestFocusForWindowHook->m_pOriginal)(thisptr, pWindow);
+  (*(origIHyprLayout_requestFocusForWindow)g_hych_pIHyprLayout_requestFocusForWindowHook->m_pOriginal)(thisptr, pWindow);
 }
 
 void hkCWindow_moveToWorkspace(void* thisptr,int workspaceID) {
   auto pWindow = g_pCompositor->m_pLastWindow;
-  auto pNode = g_Hide->getNodeFromWindow(pWindow);
+  auto pNode = g_hych_Hide->getNodeFromWindow(pWindow);
 
   if (pNode && g_pCompositor->isWorkspaceSpecial(workspaceID)) {
     pNode->isMinimized = true;
     wlr_foreign_toplevel_handle_v1_set_minimized(pWindow->m_phForeignToplevel, true);
     hych_log(LOG,"window enter special workspace,minimized:{},window:{}",pNode->isMinimized,pWindow); 
-  } else if(pNode && g_Hide->isInSpecialWorkspace()) {
+  } else if(pNode && g_hych_Hide->isInSpecialWorkspace()) {
       pNode->isMinimized = false;
       wlr_foreign_toplevel_handle_v1_set_minimized(pWindow->m_phForeignToplevel, false);  
       hych_log(LOG,"window leave special workspace,minimized:{},window:{}",pNode->isMinimized,pWindow); 
   }
   
-  (*(origCWindow_moveToWorkspace)g_pCWindow_moveToWorkspaceHook->m_pOriginal)(thisptr, workspaceID);
+  (*(origCWindow_moveToWorkspace)g_hych_pCWindow_moveToWorkspaceHook->m_pOriginal)(thisptr, workspaceID);
 
 }
 
 void hkEvents_listener_requestMinimize(void* thisptr,void* owner, void* data) {
     auto pWindow = g_pCompositor->m_pLastWindow;
-    auto pNode = g_Hide->getNodeFromWindow(pWindow);
+    auto pNode = g_hych_Hide->getNodeFromWindow(pWindow);
 
     if(pNode && !pNode->isMinimized) {
       hych_log(LOG,"receive minimize request from client,window:{}",pWindow); 
-      g_Hide->hideWindowToSpecial(pWindow);
+      g_hych_Hide->hideWindowToSpecial(pWindow);
     }
 }
 
@@ -118,16 +118,16 @@ std::string getKeynameFromKeycode(wlr_keyboard_key_event* e, SKeyboard* pKeyboar
 }
 
 bool isKeyReleaseToggleExitOverviewHit(wlr_keyboard_key_event* e, SKeyboard* pKeyboard) {
-  if (g_alt_replace_key == "")
+  if (g_hych_alt_replace_key == "")
     return false;
 
-  if (isNumber(g_alt_replace_key) && std::stoi(g_alt_replace_key) > 9 && std::stoi(g_alt_replace_key) == (e->keycode + 8)) {
+  if (isNumber(g_hych_alt_replace_key) && std::stoi(g_hych_alt_replace_key) > 9 && std::stoi(g_hych_alt_replace_key) == (e->keycode + 8)) {
     return true;
-  } else if (g_alt_replace_key.find("code:") == 0 && isNumber(g_alt_replace_key.substr(5)) && std::stoi(g_alt_replace_key.substr(5)) == (e->keycode + 8)) {
+  } else if (g_hych_alt_replace_key.find("code:") == 0 && isNumber(g_hych_alt_replace_key.substr(5)) && std::stoi(g_hych_alt_replace_key.substr(5)) == (e->keycode + 8)) {
     return true;
   } else {
     std::string keyname = getKeynameFromKeycode(e,pKeyboard);
-    if (keyname == g_alt_replace_key) {
+    if (keyname == g_hych_alt_replace_key) {
       return true;
     }
   }
@@ -137,13 +137,13 @@ bool isKeyReleaseToggleExitOverviewHit(wlr_keyboard_key_event* e, SKeyboard* pKe
 
 static void hkOnKeyboardKey(void* thisptr,wlr_keyboard_key_event* e, SKeyboard* pKeyboard) {
 
-  (*(origOnKeyboardKey)g_pOnKeyboardKeyHook->m_pOriginal)(thisptr, e, pKeyboard);
+  (*(origOnKeyboardKey)g_hych_pOnKeyboardKeyHook->m_pOriginal)(thisptr, e, pKeyboard);
   // hycov_log(LOG,"alt key,keycode:{}",e->keycode);
-  if(g_enable_alt_release_exit && g_pCompositor->m_pLastMonitor->specialWorkspaceID != 0 && e->state == WL_KEYBOARD_KEY_STATE_RELEASED) {
+  if(g_hych_enable_alt_release_exit && g_pCompositor->m_pLastMonitor->specialWorkspaceID != 0 && e->state == WL_KEYBOARD_KEY_STATE_RELEASED) {
     if (!isKeyReleaseToggleExitOverviewHit(e,pKeyboard))
       return;
     restore_minimize_window("");
-    g_Hide->leaveSpecialWorkspace();
+    g_hych_Hide->leaveSpecialWorkspace();
     hych_log(LOG,"alt key release toggle leave special workspace");
   }
 
@@ -155,18 +155,18 @@ void registerGlobalEventHook() {
   HyprlandAPI::registerCallbackDynamic(PHANDLE, "closeWindow", [&](void* self, SCallbackInfo& info, std::any data) { closeWindowHook(self, info, data); });
   HyprlandAPI::registerCallbackDynamic(PHANDLE, "workspace", [&](void* self, SCallbackInfo& info, std::any data) { workspaceHook(self, info, data); });
 
-  g_pIHyprLayout_requestFocusForWindowHook = HyprlandAPI::createFunctionHook(PHANDLE, (void*)&IHyprLayout::requestFocusForWindow, (void*)&hkIHyprLayout_requestFocusForWindow);
-  g_pIHyprLayout_requestFocusForWindowHook->hook();
+  g_hych_pIHyprLayout_requestFocusForWindowHook = HyprlandAPI::createFunctionHook(PHANDLE, (void*)&IHyprLayout::requestFocusForWindow, (void*)&hkIHyprLayout_requestFocusForWindow);
+  g_hych_pIHyprLayout_requestFocusForWindowHook->hook();
 
-  g_pCWindow_moveToWorkspaceHook = HyprlandAPI::createFunctionHook(PHANDLE, (void*)&CWindow::moveToWorkspace, (void*)&hkCWindow_moveToWorkspace);
-  g_pCWindow_moveToWorkspaceHook->hook();
+  g_hych_pCWindow_moveToWorkspaceHook = HyprlandAPI::createFunctionHook(PHANDLE, (void*)&CWindow::moveToWorkspace, (void*)&hkCWindow_moveToWorkspace);
+  g_hych_pCWindow_moveToWorkspaceHook->hook();
 
-  g_pEvents_listener_requestMinimizeHook = HyprlandAPI::createFunctionHook(PHANDLE, (void*)&Events::listener_requestMinimize, (void*)&hkEvents_listener_requestMinimize);
-  g_pEvents_listener_requestMinimizeHook->hook();
+  g_hych_pEvents_listener_requestMinimizeHook = HyprlandAPI::createFunctionHook(PHANDLE, (void*)&Events::listener_requestMinimize, (void*)&hkEvents_listener_requestMinimize);
+  g_hych_pEvents_listener_requestMinimizeHook->hook();
 
-  g_pOnKeyboardKeyHook = HyprlandAPI::createFunctionHook(PHANDLE, (void*)&CInputManager::onKeyboardKey, (void*)&hkOnKeyboardKey);
+  g_hych_pOnKeyboardKeyHook = HyprlandAPI::createFunctionHook(PHANDLE, (void*)&CInputManager::onKeyboardKey, (void*)&hkOnKeyboardKey);
   //apply hook OnKeyboardKey function
-  if (g_enable_alt_release_exit) {
-      g_pOnKeyboardKeyHook->hook();
+  if (g_hych_enable_alt_release_exit) {
+      g_hych_pOnKeyboardKeyHook->hook();
   }
 }

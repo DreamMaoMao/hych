@@ -16,11 +16,11 @@ APICALL EXPORT PLUGIN_DESCRIPTION_INFO PLUGIN_INIT(HANDLE handle)
 	static const auto *pEnable_alt_release_exit = &HyprlandAPI::getConfigValue(PHANDLE, "plugin:hych:enable_alt_release_exit")->intValue;
 	static const auto *pAlt_replace_key = &HyprlandAPI::getConfigValue(PHANDLE, "plugin:hych:alt_replace_key")->strValue;
 
-	g_enable_alt_release_exit = *pEnable_alt_release_exit;
-	g_alt_replace_key = *pAlt_replace_key;
+	g_hych_enable_alt_release_exit = *pEnable_alt_release_exit;
+	g_hych_alt_replace_key = *pAlt_replace_key;
 
 
-	g_Hide = std::make_unique<Hide>();
+	g_hych_Hide = std::make_unique<Hide>();
 
 	registerGlobalEventHook();
 	registerDispatchers();

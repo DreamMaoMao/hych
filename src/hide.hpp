@@ -30,4 +30,4 @@ public:
 };
 
 
-inline std::unique_ptr<Hide> g_Hide;
+inline std::unique_ptr<Hide> g_hych_Hide;
