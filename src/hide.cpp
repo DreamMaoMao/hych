@@ -49,7 +49,7 @@ void Hide::refocusToSourceWorkspaceAfterMove(int workspaceID) {
 void Hide::moveWindowToSpecialWorlspace(CWindow *pWindow) {
     std::string workspaceName = "";
 
-    const int   WORKSPACEID = getWorkspaceIDFromString("special", workspaceName);
+    const int   WORKSPACEID = getWorkspaceIDFromString("special:minimized", workspaceName);
 
     if (WORKSPACEID == INT_MAX) {
         Debug::log(ERR, "Error in moveActiveToWorkspaceSilent, invalid value");
