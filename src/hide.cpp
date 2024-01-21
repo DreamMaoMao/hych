@@ -12,8 +12,8 @@ SHideNodeData *Hide::getNodeFromWindow(CWindow *pWindow)
 }
 
 void Hide::refocusToSourceWorkspaceAfterMove(int workspaceID) {
-    if (g_pCompositor->m_pLastWindow->m_iWorkspaceID == workspaceID)
-        return;
+    // if (g_pCompositor->m_pLastWindow->m_iWorkspaceID == workspaceID)
+    //     return;
     
     for (auto &w : g_pCompositor->m_vWindows) {
         CWindow *pWindow = w.get();
