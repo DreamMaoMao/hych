@@ -8,9 +8,17 @@ APICALL EXPORT PLUGIN_DESCRIPTION_INFO PLUGIN_INIT(HANDLE handle)
 	PHANDLE = handle;
 
 #define CONF(NAME, TYPE, VALUE) \
-	// HyprlandAPI::addConfigValue(PHANDLE, "plugin:hych:" NAME, SConfigValue{.TYPE##Value = VALUE})
-	// CONF("enable_xxx", int, 1);
+	HyprlandAPI::addConfigValue(PHANDLE, "plugin:hych:" NAME, SConfigValue{.TYPE##Value = VALUE})
+	CONF("enable_alt_release_exit", int, 0);
+	CONF("alt_replace_key", str, "Alt_L");
 #undef CONF
+
+	static const auto *pEnable_alt_release_exit = &HyprlandAPI::getConfigValue(PHANDLE, "plugin:hych:enable_alt_release_exit")->intValue;
+	static const auto *pAlt_replace_key = &HyprlandAPI::getConfigValue(PHANDLE, "plugin:hych:alt_replace_key")->strValue;
+
+	g_enable_alt_release_exit = *pEnable_alt_release_exit;
+	g_alt_replace_key = *pAlt_replace_key;
+
 
 	g_Hide = std::make_unique<Hide>();
 

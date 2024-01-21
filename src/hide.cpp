@@ -71,6 +71,10 @@ void Hide::moveWindowToSpecialWorlspace(CWindow *pWindow) {
     }
 }
 
+void Hide::leaveSpecialWorkspace() {
+	const auto pMonitor = g_pCompositor->m_pLastMonitor;
+	pMonitor->setSpecialWorkspace(nullptr);
+}
 
 void Hide::hideWindowToSpecial(CWindow *pWindow) {
 

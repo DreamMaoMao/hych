@@ -1,8 +1,46 @@
 #include "dispatchers.hpp"
-// void dispatch_example(std::string arg)
-// {
 
-// }
+CWindow *get_circle_next_window (std::string arg) {
+	bool next_ready = false;
+	CWindow *pTempClient =  g_pCompositor->m_pLastWindow;
+    for (auto &w : g_pCompositor->m_vWindows)
+    {
+		CWindow *pWindow = w.get();
+        if (pTempClient->m_iWorkspaceID !=pWindow->m_iWorkspaceID || pWindow->isHidden() || !pWindow->m_bIsMapped || pWindow->m_bFadingOut || pWindow->m_bIsFullscreen)
+            continue;
+		if (next_ready)
+			return 	pWindow;
+		if (pWindow == pTempClient)
+			next_ready = true;	
+    }
+
+    for (auto &w : g_pCompositor->m_vWindows)
+    {
+		CWindow *pWindow = w.get();
+        if (pTempClient->m_iWorkspaceID !=pWindow->m_iWorkspaceID || !g_pCompositor->isWorkspaceSpecial(pWindow->m_iWorkspaceID) || pWindow->isHidden() || !pWindow->m_bIsMapped || pWindow->m_bFadingOut || pWindow->m_bIsFullscreen)
+            continue;
+		return pWindow;
+    }
+	return nullptr;
+}
+
+void warpcursor_and_focus_to_window(CWindow *pWindow) {
+	g_pCompositor->focusWindow(pWindow);
+	g_pCompositor->warpCursorTo(pWindow->middle());
+	g_pInputManager->m_pForcedFocus = pWindow;
+    g_pInputManager->simulateMouseMovement();
+    g_pInputManager->m_pForcedFocus = nullptr;
+}
+
+void dispatch_circle(std::string arg)
+{
+	CWindow *pWindow;
+	pWindow = get_circle_next_window(arg);
+	if(pWindow){
+		warpcursor_and_focus_to_window(pWindow);
+	}
+}
+
 
 void minimize_window(std::string arg)
 {
@@ -18,10 +56,13 @@ void restore_minimize_window(std::string arg)
 {
 
 	if(g_Hide->isInSpecialWorkspace()) {
-		static auto* const PFOLLOWMOUSE = &g_pConfigManager->getConfigValuePtr("input:follow_mouse")->intValue;
-		const auto pMonitor = *PFOLLOWMOUSE == 1 ? g_pCompositor->getMonitorFromCursor() : g_pCompositor->m_pLastMonitor;
+		if(!g_pCompositor->isWorkspaceSpecial(g_pCompositor->m_pLastWindow->m_iWorkspaceID)) {
+			g_Hide->leaveSpecialWorkspace();
+			hych_log(LOG,"special workspace view,do noting");
+			return;
+		}
 		g_Hide->restoreWindowFromSpecial(g_pCompositor->m_pLastWindow);
-		pMonitor->setSpecialWorkspace(nullptr);
+		g_Hide->leaveSpecialWorkspace();
 		hych_log(LOG,"special workspace view,shortcut key toggle restore window:{}",g_pCompositor->m_pLastWindow);
 		return;
 	}
@@ -37,10 +78,20 @@ void restore_minimize_window(std::string arg)
 	}	
 }
 
+
+void toggle_restore_window(std::string arg)
+{
+	if(g_pCompositor->m_pLastMonitor->specialWorkspaceID == 0) {
+		g_pKeybindManager->toggleSpecialWorkspace("");
+	} else {
+		dispatch_circle("");
+	}
+}
+
 void registerDispatchers()
 {
-	// HyprlandAPI::addDispatcher(PHANDLE, "hych:example", dispatch_example);
 	HyprlandAPI::addDispatcher(PHANDLE, "hych:minimize", minimize_window);
 	HyprlandAPI::addDispatcher(PHANDLE, "hych:restore_minimize", restore_minimize_window);
+	HyprlandAPI::addDispatcher(PHANDLE, "hych:toggle_restore_window", toggle_restore_window);
 
 }

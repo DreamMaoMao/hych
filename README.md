@@ -8,28 +8,26 @@ This plugin some feature(click waybar icon) is not yet available for latest V0.3
 
 - Support remember the workspace which the window was in
 
+- Support restore minimize window by 'alt-tab' mode like switch window in "gnome alt-tab" 
+
 - Support minimize window and restore window by clicking the icon on the waybar
 
 - Support customize the minimization status on the waybar
 
 - Support for minimize buttons in app
 
-- Support use shortcut keys to select a window in the special Workspace view to restore 
-
-- Support use shortcut keys to Ergodic restore in the normal Workspace 
+- Support use shortcut keys to Ergodic restore in the normal Workspace(without select)
 
 This plugin uses the special workspace built into hyprland to hide windows, aiming to enhance the functionality of the special workspace, so it can also be compatible with the previous special workspace operations.
 
 For example, you can restore the windows that you put into the special workspace by the old way by clicking the waybar icon or using the shortcut keys of this plugin to the normal workspace.
 
 
-## use mouse
+## by click waybar icon or app minimize button
 
-https://github.com/DreamMaoMao/hych/assets/30348075/9d114048-a260-4447-bbe3-2162e8c86ac9
+## alt-tab select mode
 
-## use keyboard
-
-https://github.com/DreamMaoMao/hych/assets/30348075/976d7b79-3d7c-4789-b8af-9d434d66b03b
+## no select mode
 
 
   
@@ -56,13 +54,51 @@ bash install.sh # `libhycov.so` path: /usr/lib/libhycov.so
 ```conf
 plugin = /usr/lib/libhych.so
 
-bind=ALT,i,hych:minimize
-bind=ALT_SHIFT,i,hych:restore_minimize
+bind=ALT,i,hych:minimize # minimize window
+bind=ALT_SHIFT,i,hych:restore_minimize #manual restore window
+bind = ALT, w, hych:toggle_restore_window # restore by alt-tab mode
 
+plugin {
+    hych {
+        enable_alt_release_exit = 1 # alt swith mode,see readme for detail
+        alt_replace_key = code:64 # alt swith mode,see readme for detail
+    }
+}
 ```
+
+## click waybar icon
 - when the window is not active, clicking the waybar icon button will activate the window 
 - when the window is active, clicking the icon button will minimize the window
 - when the window has been minimized, clicking the icon button will restore the window
+
+## alt-tab mode
+
+such as bind to `alt + w`:
+
+- 1.`alt + w` will enter special workspace when you not in special workspace(please hold alt,don't make it release)
+
+- 2.`alt + w` will switch window focus circularly when you in special workspace. (please hold alt,don't make it release)
+
+- 3.when you release `alt` , it will auto exit special workspace and restore the select window.
+
+<details>
+<summary> If you don't want to use `alt` as MainKey in alt mode</summary>
+
+such as use `super` to repalce `alt`
+- 1.bind toggleoverview
+```
+bind = SUPER,w,hych:toggle_restore_window
+```
+- 2.use `alt_replace_key` to specify what is the detection key on release.
+```
+# use keyname
+alt_replace_key = Super_L # Alt_L,Alt_R,Super_L,Super_R,Control_L,Control_R,Shift_L,Shift_R
+
+# use keycode
+alt_replace_key = code:133 # use `xev` command to get keycode
+```
+
+</details>
 
 # waybar config demo
 <details>
