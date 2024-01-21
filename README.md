@@ -25,12 +25,20 @@ For example, you can restore the windows that you put into the special workspace
 
 ## by click waybar icon or app minimize button
 
+https://github.com/DreamMaoMao/hych/assets/30348075/32162394-963b-4eeb-9608-03da36c0acfd
+
 ## alt-tab select mode
+
+https://github.com/DreamMaoMao/hych/assets/30348075/c42c38db-8d21-4ca9-886c-5e21a4c14864
+
 
 ## no select mode
 
+https://github.com/DreamMaoMao/hych/assets/30348075/60799d58-190e-4e19-8305-0cbd12b2be36
 
-  
+
+
+
 ### Manual Installation
 
 ##### something need to notice
