@@ -88,7 +88,7 @@ void restore_minimize_window(std::string arg)
 void toggle_restore_window(std::string arg)
 {
 	if(g_pCompositor->m_pLastMonitor->specialWorkspaceID == 0) {
-		g_pKeybindManager->toggleSpecialWorkspace("minimized");
+		g_pKeybindManager->toggleSpecialWorkspace("");
 	} else if(g_hych_enable_alt_release_exit && !g_pCompositor->m_pLastMonitor->specialWorkspaceID == 0) {
 		dispatch_circle("");
 	} else {

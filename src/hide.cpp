@@ -12,8 +12,8 @@ SHideNodeData *Hide::getNodeFromWindow(CWindow *pWindow)
 }
 
 void Hide::refocusToSourceWorkspaceAfterMove(int workspaceID) {
-    // if (g_pCompositor->m_pLastWindow->m_iWorkspaceID == workspaceID)
-    //     return;
+    if (g_pCompositor->m_pLastWindow->m_iWorkspaceID == workspaceID)
+        return;
     
     for (auto &w : g_pCompositor->m_vWindows) {
         CWindow *pWindow = w.get();
@@ -28,7 +28,7 @@ void Hide::refocusToSourceWorkspaceAfterMove(int workspaceID) {
 void Hide::moveWindowToSpecialWorlspace(CWindow *pWindow) {
     std::string workspaceName = "";
 
-    const int   WORKSPACEID = getWorkspaceIDFromString("special:minimized", workspaceName);
+    const int   WORKSPACEID = getWorkspaceIDFromString("special", workspaceName);
 
     if (WORKSPACEID == INT_MAX) {
         Debug::log(ERR, "Error in moveActiveToWorkspaceSilent, invalid value");
