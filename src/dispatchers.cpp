@@ -67,8 +67,8 @@ void restore_minimize_window(std::string arg)
 			hych_log(LOG,"special workspace view,do noting");
 			return;
 		}
-		g_hych_Hide->restoreWindowFromSpecial(g_pCompositor->m_pLastWindow);
 		g_hych_Hide->leaveSpecialWorkspace();
+		g_hych_Hide->restoreWindowFromSpecial(pTargetWindow);
 		hych_log(LOG,"special workspace view,shortcut key toggle restore window:{}",g_pCompositor->m_pLastWindow);
 		return;
 	}
