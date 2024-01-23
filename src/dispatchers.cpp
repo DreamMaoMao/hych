@@ -84,11 +84,23 @@ void restore_minimize_window(std::string arg)
 	}	
 }
 
+void focusOneWindowInSpecialWorkspace() {
+    
+    for (auto &w : g_pCompositor->m_vWindows) {
+        CWindow *pWindow = w.get();
+        if ( g_pCompositor->isWorkspaceSpecial(pWindow->m_iWorkspaceID)) {
+            g_pCompositor->focusWindow(pWindow);
+            return;
+        }
+    }
+    g_pCompositor->focusWindow(nullptr);
+}
 
 void toggle_restore_window(std::string arg)
 {
 	if(g_pCompositor->m_pLastMonitor->specialWorkspaceID == 0) {
 		g_pKeybindManager->toggleSpecialWorkspace("");
+		focusOneWindowInSpecialWorkspace();
 	} else if(g_hych_enable_alt_release_exit && !g_pCompositor->m_pLastMonitor->specialWorkspaceID == 0) {
 		dispatch_circle("");
 	} else {
