@@ -12,17 +12,15 @@ SHideNodeData *Hide::getNodeFromWindow(CWindow *pWindow)
 }
 
 void Hide::refocusToSourceWorkspaceAfterMove(int workspaceID) {
-    if (g_pCompositor->m_pLastWindow->m_iWorkspaceID == workspaceID)
+    for (auto &w : g_pCompositor->m_vWindows)
+    {
+		CWindow *pWindow = w.get();
+        if ((g_pCompositor->m_pLastMonitor->specialWorkspaceID != 0 && !g_pCompositor->isWorkspaceSpecial(pWindow->m_iWorkspaceID)) || pWindow->m_iWorkspaceID != workspaceID || pWindow->isHidden() || !pWindow->m_bIsMapped || pWindow->m_bFadingOut || pWindow->m_bIsFullscreen)
+            continue;
+        g_pCompositor->focusWindow(pWindow);
         return;
-    
-    for (auto &w : g_pCompositor->m_vWindows) {
-        CWindow *pWindow = w.get();
-        if (pWindow->m_iWorkspaceID == workspaceID) {
-            g_pCompositor->focusWindow(pWindow);
-            return;
-        }
     }
-    g_pCompositor->focusWindow(nullptr);
+	g_pCompositor->focusWindow(nullptr);
 }
 
 void Hide::moveWindowToSpecialWorlspace(CWindow *pWindow) {
