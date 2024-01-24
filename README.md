@@ -1,9 +1,6 @@
 # hych
 Window minimization plugin for hyprland,Enhancements to special workspaces.
 
-This plugin some feature(click waybar icon) is not yet available for latest V0.34 version of hyprland,This bug is being fixed, refer to issue:[https://github.com/DreamMaoMao/hych/issues/1]
-
-
 ### what can it do:
 
 - Support remember the workspace which the window was in
