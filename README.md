@@ -42,8 +42,8 @@ https://github.com/DreamMaoMao/hych/assets/30348075/60799d58-190e-4e19-8305-0cbd
 1.You need to manually relogin after it is installed. 
 after the installation is complete, it may also trigger logout if you do not logout which is normal.
 
-2.Only supports hyprland source code after 2023-10-22.
-because the plugin requires this [commit](https://github.com/hyprwm/Hyprland/commit/754eaf5b8b65c9764abe67ec2d599036cd51e381) in hyprland(was commited in 2024-1-25)
+2.Only supports hyprland source code after 2024-1-25.
+because the plugin requires this [commit](https://github.com/hyprwm/Hyprland/commit/754eaf5b8b65c9764abe67ec2d599036cd51e381) in hyprland
 
 
 ##### using cmake:
