@@ -43,7 +43,7 @@ https://github.com/DreamMaoMao/hych/assets/30348075/60799d58-190e-4e19-8305-0cbd
 after the installation is complete, it may also trigger logout if you do not logout which is normal.
 
 2.Only supports hyprland source code after 2023-10-22.
-because the plugin requires this [commit](https://github.com/hyprwm/Hyprland/commit/a61eb7694df25a75f45502ed64b1536fda370c1d) in hyprland(was commited in 2023-10-21)
+because the plugin requires this [commit](https://github.com/hyprwm/Hyprland/commit/754eaf5b8b65c9764abe67ec2d599036cd51e381) in hyprland(was commited in 2024-1-25)
 
 
 ##### using cmake:
@@ -202,15 +202,6 @@ alt_replace_key = code:133 # use `xev` command to get keycode
 - some config not work, or the plugin not work.
 ```
 if you use install hycov at first time,please try logout and relogin again.
-```
-
-- The numbers on the waybar are confused
-
-```
-1.Please pull the latest waybar source code compilation,
-this issue has been fixed in the waybar project, fix date (2023-10-27)
-
-2.Change the {id} field in hyprland/workspace field to {name}
 ```
 
 - Compilation failure
