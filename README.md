@@ -51,7 +51,7 @@ because the plugin requires this [commit](https://github.com/hyprwm/Hyprland/com
 ```shell
 git clone https://github.com/DreamMaoMao/hych.git
 cd hych
-bash install.sh # `libhycov.so` path: /usr/lib/libhycov.so
+bash install.sh # `libhycov.so` path: /usr/lib/libhych.so
 ```
 
 ### Usage (hyprland.conf)
