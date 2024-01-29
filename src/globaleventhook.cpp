@@ -138,7 +138,6 @@ bool isKeyReleaseToggleExitOverviewHit(wlr_keyboard_key_event* e, SKeyboard* pKe
 static void hkOnKeyboardKey(void* thisptr,wlr_keyboard_key_event* e, SKeyboard* pKeyboard) {
 
   (*(origOnKeyboardKey)g_hych_pOnKeyboardKeyHook->m_pOriginal)(thisptr, e, pKeyboard);
-  // hycov_log(LOG,"alt key,keycode:{}",e->keycode);
   if(g_hych_enable_alt_release_exit && g_pCompositor->m_pLastMonitor->specialWorkspaceID != 0 && e->state == WL_KEYBOARD_KEY_STATE_RELEASED) {
     if (!isKeyReleaseToggleExitOverviewHit(e,pKeyboard))
       return;

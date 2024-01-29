@@ -1,0 +1,15 @@
+[repository]
+name = "hych"
+authors = ["DreamMaoMao"]
+commit_pins = [
+	["03ebbe18ed8517ee22591eac82cd54322f42cb7d", "a773756b34f8a4855075140abea823b3bf848079"]
+]
+
+[hych]
+description = "Window minimization plugin for hyprland,Enhancements to special workspaces"
+authors = ["DreamMaoMao"]
+output = "build/libhych.so"
+build = [
+	"cmake -DCMAKE_BUILD_TYPE=Release -B build",
+	"cmake --build build"
+]

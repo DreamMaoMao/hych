@@ -51,7 +51,7 @@ because the plugin requires this [commit](https://github.com/hyprwm/Hyprland/com
 ```shell
 git clone https://github.com/DreamMaoMao/hych.git
 cd hych
-bash install.sh # `libhycov.so` path: /usr/lib/libhych.so
+bash install.sh # `libhych.so` path: /usr/lib/libhych.so
 ```
 
 ### Usage (hyprland.conf)
@@ -201,7 +201,7 @@ alt_replace_key = code:133 # use `xev` command to get keycode
 ## Frequently Asked Questions
 - some config not work, or the plugin not work.
 ```
-if you use install hycov at first time,please try logout and relogin again.
+if you use install hych at first time,please try logout and relogin again.
 ```
 
 - Compilation failure
