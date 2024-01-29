@@ -25,6 +25,8 @@ APICALL EXPORT PLUGIN_DESCRIPTION_INFO PLUGIN_INIT(HANDLE handle)
 	registerGlobalEventHook();
 	registerDispatchers();
 	
+ 	HyprlandAPI::reloadConfig();
+
 	return {"hych", "Window minimization plugin", "DreamMaoMao", "0.1"};
 }
 
