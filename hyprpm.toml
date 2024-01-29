@@ -2,7 +2,7 @@
 name = "hych"
 authors = ["DreamMaoMao"]
 commit_pins = [
-	["03ebbe18ed8517ee22591eac82cd54322f42cb7d", "a773756b34f8a4855075140abea823b3bf848079"]
+	["03ebbe18ed8517ee22591eac82cd54322f42cb7d", "699e369145fefaf1b2569c4b05a0787091680107"]
 ]
 
 [hych]
