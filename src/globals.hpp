@@ -10,7 +10,7 @@
 #include <hyprland/src/managers/KeybindManager.hpp>
 #undef private
 
-#include <boost/algorithm/string.hpp>
+// #include <boost/algorithm/string.hpp>
 
 #include "hide.hpp"
 
