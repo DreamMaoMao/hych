@@ -71,6 +71,68 @@ plugin {
 }
 ```
 
+### NixOS with home—manager
+
+**Note:** Requires `home-manager` after [this](https://github.com/nix-community/home-manager/commit/9b378afae72cb07471e19aefc30e8e05ef2d7a61) commit
+
+```nix
+# flake.nix
+
+{
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    home-manager = {
+      url = "github:nix-community/home-manager";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    hyprland.url = "github:hyprwm/Hyprland";
+
+    hych = {
+      url = "github:DreamMaoMao/hych";
+      inputs.hyprland.follows = "hyprland";
+    };
+  };
+
+  outputs = { nixpkgs, home-manager, hyprland, hych, ... }:
+    let
+      system = "x86_64-linux";
+      pkgs = nixpkgs.legacyPackages.${system};
+    in
+    {
+      homeConfigurations."user@hostname" = home-manager.lib.homeManagerConfiguration {
+        pkgs = nixpkgs.legacyPackages.x86_64-linux;
+
+        modules = [
+          hyprland.homeManagerModules.default
+          {
+            wayland.windowManager.hyprland = {
+              enable = true;
+              plugins = [
+                hych.packages.${pkgs.system}.hych
+              ];
+
+              settings = {
+                bind = [
+                  "ALT,i,hych:minimize"
+                  "ALT_SHIFT,i,hych:restore_minimize"
+                  "ALT, w, hych:toggle_restore_window"
+                ];
+
+                plugin.hych = {
+                  enable_alt_release_exit = 1;
+                  alt_replace_key = code:64;
+                };
+              };
+            };
+          }
+        ];
+      };
+    };
+}
+```
+
 ## click waybar icon
 - when the window is not active, clicking the waybar icon button will activate the window 
 - when the window is active, clicking the icon button will minimize the window
