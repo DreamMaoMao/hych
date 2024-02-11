@@ -1,3 +1,9 @@
+> [!NOTE]
+> Sorry guys.
+> Since I don't use this warehouse much and it is not needed by many others,
+> I decided that this warehouse will no longer track the latest hyprland
+
+
 # hych
 Window minimization plugin for hyprland,Enhancements to special workspaces.
 
