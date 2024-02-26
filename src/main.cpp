@@ -7,16 +7,19 @@ APICALL EXPORT PLUGIN_DESCRIPTION_INFO PLUGIN_INIT(HANDLE handle)
 {
 	PHANDLE = handle;
 
-#define CONF(NAME, TYPE, VALUE) \
-	HyprlandAPI::addConfigValue(PHANDLE, "plugin:hych:" NAME, SConfigValue{.TYPE##Value = VALUE})
-	CONF("enable_alt_release_exit", int, 0);
-	CONF("alt_replace_key", str, "Alt_L");
+#define CONF(NAME,VALUE) \
+	HyprlandAPI::addConfigValue(PHANDLE, "plugin:hych:" NAME, {VALUE})
+	CONF("enable_alt_release_exit", 0L);
+	CONF("alt_replace_key", "Alt_L");
 #undef CONF
 
-	static const auto *pEnable_alt_release_exit = &HyprlandAPI::getConfigValue(PHANDLE, "plugin:hych:enable_alt_release_exit")->intValue;
-	static const auto *pAlt_replace_key = &HyprlandAPI::getConfigValue(PHANDLE, "plugin:hych:alt_replace_key")->strValue;
+	HyprlandAPI::reloadConfig();
+	g_pConfigManager->tick();
 
-	g_hych_enable_alt_release_exit = *pEnable_alt_release_exit;
+	static const auto *pEnable_alt_release_exit = (Hyprlang::STRING const*)(HyprlandAPI::getConfigValue(PHANDLE, "plugin:hych:enable_alt_release_exit")->getDataStaticPtr());
+	static const auto *pAlt_replace_key = (Hyprlang::STRING const*)(HyprlandAPI::getConfigValue(PHANDLE, "plugin:hych:alt_replace_key")->getDataStaticPtr());
+
+	g_hych_enable_alt_release_exit = **pEnable_alt_release_exit;
 	g_hych_alt_replace_key = *pAlt_replace_key;
 
 
