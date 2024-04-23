@@ -22,6 +22,7 @@ inline CFunctionHook* g_hych_pOnKeyboardKeyHook = nullptr;
 
 inline int g_hych_enable_alt_release_exit;
 inline std::string g_hych_alt_replace_key;
+inline int g_hych_restore_to_old_workspace;
 
 inline void errorNotif()
 {

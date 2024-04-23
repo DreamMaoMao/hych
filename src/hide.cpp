@@ -71,17 +71,22 @@ void Hide::hideWindowToSpecial(CWindow *pWindow) {
 
 void Hide::restoreWindowFromSpecial(CWindow *pWindow) {
 
+    CWorkspace *pWorkspace;
     auto pNode = getNodeFromWindow(pWindow);
     
     if(!pNode) 
         return;
 
     pNode->isMinimized = false;
-    
-    auto pWorkspace = g_pCompositor->getWorkspaceByID(pNode->hibk_workspaceID);
-    if (!pWorkspace){
-        hych_log(LOG,"source workspace no exist");
-        pWorkspace = g_pCompositor->createNewWorkspace(pNode->hibk_workspaceID, pNode->pWindow->m_iMonitorID,pNode->hibk_workspaceName);
+
+    if(g_hych_restore_to_old_workspace) {
+        pWorkspace = g_pCompositor->getWorkspaceByID(pNode->hibk_workspaceID);
+        if (!pWorkspace){
+            hych_log(LOG,"source workspace no exist");
+            pWorkspace = g_pCompositor->createNewWorkspace(pNode->hibk_workspaceID, pNode->pWindow->m_iMonitorID,pNode->hibk_workspaceName);
+        }
+    } else {
+        pWorkspace =  g_pCompositor->getWorkspaceByID(g_pCompositor->m_pLastMonitor->activeWorkspace);
     }
 
     auto pMonitor = g_pCompositor->getMonitorFromID(pWorkspace->m_iMonitorID);
